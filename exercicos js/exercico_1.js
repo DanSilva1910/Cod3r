@@ -7,6 +7,15 @@
 // recuperação em trêz matérias reprovado
 
 
+// Diretoria => nome do aluno e a média nas quatro materias
+// Aluno => nome do aluno e se foi aprovado, reprovado ou esta de recuperação em cada um das quatro matérias
+// Pais => relatar apenas se o aluno foi aprovado, reprovado ou esta de recuperação
+// aprovado >= 7 recuperação < 7 e >=5 reprovado > 5
+//  aprovado em todas materias passou de ANO
+// recuperação em duas materias e aprovado nas demais  recuperacao
+// recuperação em trêz matérias reprovado
+
+
 
 const statusDiretoria = {
   nome: "",
@@ -72,8 +81,8 @@ const statusNotas = (statusAluno) => {
 
 
 
-const alunos = {
-  aluno1: {
+const alunos = [
+  {
     nome: "João",
     materias: [
       { nome: "Português", notas: [4.4, 5.6, 4, 2.2] },
@@ -82,7 +91,7 @@ const alunos = {
       { nome: "Estudos Sociais", notas: [7.0, 7.6, 8.5, 9.2] },
     ],
   },
-  aluno2: {
+  {
     nome: "Marcos",
     materias: [
       { nome: "Português", notas: [7.4, 5.6, 5.0, 7.0] },
@@ -91,7 +100,7 @@ const alunos = {
       { nome: "Estudos Sociais", notas: [7.0, 7.6, 8.5, 9.2] },
     ],
   },
-  aluno3: {
+  {
     nome: "Maria",
     materias: [
       { nome: "Português", notas: [7.4, 5.6, 10, 8.2] },
@@ -100,10 +109,10 @@ const alunos = {
       { nome: "Estudos Sociais", notas: [7.0, 7.6, 8.5, 9.2] },
     ],
   },
-};
+];
 
 const avaliarAlunos = (alunos) => {
-  Object.values(alunos).forEach(aluno => {
+  alunos.forEach(aluno => {
     statusGeralAluno(aluno);
     console.log("\nStatus Direção:", statusDiretoria);
     console.log("\nStatus Aluno:", statusAluno);
