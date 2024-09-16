@@ -4,13 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Desafio_1</title>
+    <style>
+        .destaque{
+            border: 2px solid #d62612;
+            color: rgb(175, 15, 15);
+            width: 150px;
+            background-color: #f0ee74fe;
+            padding: 5px;
+
+        }
+    </style>
 </head>
 <body id="exercicio">
-    <p class="destaque">Paragrafo #1</p>
+    <p>Paragrafo #1</p>
     <article>
         <p>Paragrafo #2</p>
     </article>
-    <p class="destaque">Paragrafo #3</p>
+    <p>Paragrafo #3</p>
     <article>
         <p>Paragrafo #4</p>
     </article>
@@ -23,10 +33,10 @@
         // 1. adicionar o texto [Fora]no inicio dos paragrafos
         // 2. adicionar a classe destaque nestes paragrafos
 
-        const element = document.querySelectorAll('.destaque')
-        console.log(element )
+        const element = document.querySelectorAll(':not(article) > p')
         element .forEach(el => {
             el.textContent = `Fora ${el.textContent}`
+            el.classList.add('destaque')
         })
         
     </script>
