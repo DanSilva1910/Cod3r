@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafio_1</title>
+</head>
+<body id="exercicio">
+    <p class="destaque">Paragrafo #1</p>
+    <article>
+        <p>Paragrafo #2</p>
+    </article>
+    <p class="destaque">Paragrafo #3</p>
+    <article>
+        <p>Paragrafo #4</p>
+    </article>
+    <article>
+        <p>Paragrafo #5</p>
+    </article>
+
+    <script>
+        // selecionar os paragrafos fora de <article>
+        // 1. adicionar o texto [Fora]no inicio dos paragrafos
+        // 2. adicionar a classe destaque nestes paragrafos
+
+        const element = document.querySelectorAll('.destaque')
+        console.log(element )
+        element .forEach(el => {
+            el.textContent = `Fora ${el.textContent}`
+        })
+        
+    </script>
+
+    
+</body>
+</html>
