@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="estilo.css">
+    <title>Cifra de César</title>
+</head>
+
+<body>
+
+    <img src="./assets/cifra.jpeg" alt="Imagem Cifra de Cezar">
+    <h1>Criptografe a sua mensagem: </h1>
+   <div class="mensagem campo">
+    <label for="para-codificar">Digite a sua mensagem:
+    <input type="text" id="para-codificar">
+    </label>
+    </div>
+        
+    <div class="seletor campo"> 
+        <label for="letras-alfabeto">Mudar o inicio do alfabeto para:</label>
+        <select name="alfabeto" id="letras-alfabeto"></select>
+    </div>
+
+    <button id="botao">Criptografar</button>
+
+    <p class="invisivel" id="texto-codificado"></p>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>

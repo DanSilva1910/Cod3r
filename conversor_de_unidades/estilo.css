@@ -1,0 +1,73 @@
+* {
+    box-sizing: content-box;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(35,227,214,0.8939950980392157) 100%);
+    color:antiquewhite;
+    font-size: 1.4rem;
+}
+
+.seletores {
+    margin: 20px;
+}
+#saida-dados, #entrada-dados, #numero {
+    outline: none;
+    text-decoration: none;
+    background-color: #096d6f2d;
+    border: 3px solid rgba(10, 82, 112, 0.71);
+    border-radius: 10px;
+    font-size: 1.2rem;
+    color: antiquewhite;
+    padding: 5px;
+
+}
+
+select option {
+    background-color: rgba(9, 109, 111, 0.646); 
+}
+
+#numero{
+    width: 100px;
+    margin-bottom: 20px;
+}
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px #096d6fde inset; 
+    box-shadow: 0 0 0 1000px #096d6fdd inset; 
+    -webkit-text-fill-color: white; 
+}
+
+#botao {
+    background-color: rgba(25, 95, 174, 0.611);
+    color: white;
+    font-size: 1.2rem;
+    padding: 5px;
+    height: 30px;
+    width: 100px;
+    border-radius:30px;
+    border: 3px solid rgba(10, 82, 112, 0.71);
+    margin-bottom: 20PX;
+}
+
+.invisivel {
+    display: none;
+}
+
+#resposta-dados{
+
+    background-color: rgba(9, 109, 111, 0.176);
+    border: 3px solid rgba(10, 82, 112, 0.71);
+    border-radius: 10px;
+    font-size: 1.2rem;
+    color: antiquewhite;
+    padding: 10px;
+
+
+}

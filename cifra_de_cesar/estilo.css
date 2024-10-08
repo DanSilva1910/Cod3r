@@ -1,0 +1,64 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+body {
+
+   display: flex;
+   height: 100vh;
+   flex-direction: column;
+   align-items: center;
+   justify-content: center;
+   color: aliceblue;
+   background: rgb(2,0,36);
+   background: radial-gradient(circle, rgb(4, 0, 71) 15%, rgba(5, 235, 220, 0.801) 100%);
+   font-size: 1.4rem;
+   
+}
+
+img {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+}
+
+button {
+    border: 5px solid rgba(95, 158, 160, 0.248);
+    font-size: 1.2rem;
+    padding: 10px;
+    border-radius: 25px;
+    background-color:rgba(31, 171, 181, 0.1) ;
+    color: aliceblue;
+}
+
+div {
+   
+    margin: 20px;
+}
+
+#para-codificar, #letras-alfabeto{
+    outline: none;
+    margin: 5px 10px;
+    padding: 0px 5px;
+    border: 1px solid rgba(95, 158, 160, 0.248);
+    background-color:  rgba(95, 158, 160, 0.248);
+    color: white;
+    font-size: 1.4rem;
+    border-radius: 10px;
+}
+
+.invisivel {
+    display: none;
+}
+
+#texto-codificado {
+    font-weight: 500;
+    margin: 20px;
+    padding: 10px 20px;
+    border: 1px solid rgba(95, 158, 160, 0.248);
+    background-color:  rgba(95, 158, 160, 0.248);
+    color: white;
+    font-size: 1.5em;
+    border-radius: 10px;
+
+}
