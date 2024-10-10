@@ -31,12 +31,24 @@ class jogoDaVelha {
 
             jogar(jogada){
 
-                if(this.#jogadaValida(jogada)){
-                    this.#adicionar(jogada)
-                    this.#trocarJogador()
-                } else {
-                    console.log('Jogada Inválida')
+                this.#processarJogada(jogada)
+            }
+
+            #processarJogada(jogada){
+                if(!this.#jogadaValida(jogada)) return;  
+            
+                this.#adicionar(jogada);
+            
+                if(this.#conquitouVitoria(jogada)){
+                    this.vencedor = this.jogadorAtual.simbolo;
+                    return;
+                } else if (this.#finalizouComEmpate()) {  
+                    
+                    this.vencedor = '-';
+                    return;
                 }
+            
+                this.#trocarJogador();
             }
 
             #jogadaValida(jogada){
@@ -72,11 +84,45 @@ class jogoDaVelha {
                     this.jogador2: this.jogador1
             }
 
+            #finalizouComEmpate() {
+                let espacosVazios = this.tabuleiro
+                    .flat()
+                    .filter(campo => campo == null )
+                return espacosVazios.length === 0
+                
+            }
+
+            #conquitouVitoria(jogada){
+                let {linha, coluna} = jogada
+                let { tabuleiro, jogadorAtual} = this
+                let tamanho = tabuleiro.length
+                let indices = Array(tamanho).fill(0)
+                    .map((_, i) => i + 1)
+            
+                let ganhouLinha = indices.every(
+                    (i) => this.#campo(linha, i) === jogadorAtual.simbolo)
+    
+                let ganhouColuna = indices.every(
+                    (i) => this.#campo(i, coluna) === jogadorAtual.simbolo)
+        
+                let ganhouDiag1 = indices.every(
+                    (i) => this.#campo(i, i) === jogadorAtual.simbolo )
+        
+                let ganhouDiag2 = indices.every(
+                    (i) => this.#campo(tamanho - i + 1, i) === jogadorAtual.simbolo )
+            
+                return ganhouLinha || ganhouColuna || ganhouDiag1 || ganhouDiag2
+            }
+            
+
+
+
+
             toString(){
                 let matriz = this.tabuleiro
                     .map(linha => linha.map(posicao => posicao ?? '-')
                     .join(' ')).join('\n')
-                return matriz
+                return `${matriz}\n Vencedor: ${this.vencedor} `
 
             }
 
@@ -92,8 +138,11 @@ class jogoDaVelha {
 const jogo = new jogoDaVelha()
 jogo.jogar(new jogada(1, 1))
 jogo.jogar(new jogada(1, 2))
-jogo.jogar(new jogada(2, 1))
-jogo.jogar(new jogada(2, 1))
-jogo.jogar(new jogada(3, 2))
+jogo.jogar(new jogada(2, 3))
 jogo.jogar(new jogada(2, 2))
+jogo.jogar(new jogada(1, 3))
+jogo.jogar(new jogada(3, 2))
+jogo.jogar(new jogada(1, 1))
+jogo.jogar(new jogada(3, 3))
+jogo.jogar(new jogada(3, 2))
 console.log(jogo.toString())
