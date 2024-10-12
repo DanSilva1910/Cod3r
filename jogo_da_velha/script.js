@@ -115,9 +115,6 @@ class jogoDaVelha {
             }
             
 
-
-
-
             toString(){
                 let matriz = this.tabuleiro
                     .map(linha => linha.map(posicao => posicao ?? '-')
