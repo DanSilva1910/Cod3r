@@ -18,12 +18,16 @@ class JogadorMinimax {
 		}
 		return melhorJogada; // Retorna a jogada válida
 	}
-    minimax(tabuleiro, jogadorAtual) {
+    minimax(tabuleiro, jogadorAtual, profundidade = 0, profundidadeMaxima = 2) {
         let vencedor = this.#verificarVencedor(tabuleiro);
         if (vencedor) {
-            if (vencedor === this.simbolo) return { pontuacao: 10 };
+            if (vencedor === this.simbolo) return { pontuacao: 10 - profundidade };
             else if (vencedor === "-") return { pontuacao: 0 };
-            else return { pontuacao: -10 };
+            else return { pontuacao: -10 + profundidade };
+        }
+    
+        if (profundidade >= profundidadeMaxima) {
+            return { pontuacao: 0 }; // Retorna um valor neutro se a profundidade máxima for atingida
         }
     
         let jogadasDisponiveis = this.#obterJogadasValidas(tabuleiro);
@@ -32,7 +36,7 @@ class JogadorMinimax {
         for (let jogada of jogadasDisponiveis) {
             let tabuleiroSimulado = this.#simularJogada(tabuleiro, jogada, jogadorAtual);
             let proximoJogador = jogadorAtual === this.simbolo ? "X" : this.simbolo; // Troca de jogador
-            let resultado = this.minimax(tabuleiroSimulado, proximoJogador);
+            let resultado = this.minimax(tabuleiroSimulado, proximoJogador, profundidade + 1, profundidadeMaxima);
             jogada.pontuacao = resultado.pontuacao;
             melhoresJogadas.push(jogada);
         }
@@ -47,6 +51,7 @@ class JogadorMinimax {
             );
         }
     }
+    
     
     
 
@@ -72,24 +77,37 @@ class JogadorMinimax {
 	}
 
 	#verificarVencedor(tabuleiro) {
-		// Utilize a mesma lógica que já implementou no seu jogo para verificar se há um vencedor
-		const winningCombinations = [
-			[0, 1, 2], [3, 4, 5], [6, 7, 8],  // Linhas
-			[0, 3, 6], [1, 4, 7], [2, 5, 8],  // Colunas
-			[0, 4, 8], [2, 4, 6]              // Diagonais
-		];
+		const tamanho = tabuleiro.length;
+		const winningCombinations = [];
+		
+		// Linhas
+		for (let i = 0; i < tamanho; i++) {
+			winningCombinations.push(Array.from({ length: tamanho }, (_, j) => [i, j]));
+		}
+		
+		// Colunas
+		for (let i = 0; i < tamanho; i++) {
+			winningCombinations.push(Array.from({ length: tamanho }, (_, j) => [j, i]));
+		}
+		
+		// Diagonais
+		winningCombinations.push(Array.from({ length: tamanho }, (_, i) => [i, i])); // Diagonal principal
+		winningCombinations.push(Array.from({ length: tamanho }, (_, i) => [i, tamanho - 1 - i])); // Diagonal secundária
+	
+		// Verifica as combinações de vitória
 		for (let combo of winningCombinations) {
-			const [a, b, c] = combo;
-			if (tabuleiro[Math.floor(a / 3)][a % 3] &&
-				tabuleiro[Math.floor(a / 3)][a % 3] === tabuleiro[Math.floor(b / 3)][b % 3] &&
-				tabuleiro[Math.floor(a / 3)][a % 3] === tabuleiro[Math.floor(c / 3)][c % 3]) {
-				return tabuleiro[Math.floor(a / 3)][a % 3];
+			const simbolos = combo.map(([linha, coluna]) => tabuleiro[linha][coluna]);
+			
+			// Se todos os símbolos forem iguais e não forem nulos, temos um vencedor
+			if (simbolos.every((simbolo) => simbolo && simbolo === simbolos[0])) {
+				return simbolos[0]; // Retorna o símbolo do vencedor
 			}
 		}
-
-		return tabuleiro.flat().includes(null) ? null : "-";
+	
+		return tabuleiro.flat().includes(null) ? null : "-"; // Retorna "-" se empatou
 	}
-}
+	
+}  
 
 class Jogada {
 	constructor(linha, coluna) {
