@@ -18,7 +18,16 @@ class JogadorMinimax {
 		}
 		return melhorJogada; // Retorna a jogada válida
 	}
+
+	dificuldade(){
+		let nivel = document.querySelector('#dificuldade')
+		let nivelDificudade = +nivel.value
+		return nivelDificudade
+	}
     minimax(tabuleiro, jogadorAtual, profundidade = 0, profundidadeMaxima = 2) {
+
+		profundidadeMaxima = this.dificuldade()
+
         let vencedor = this.#verificarVencedor(tabuleiro);
         if (vencedor) {
             if (vencedor === this.simbolo) return { pontuacao: 10 - profundidade };
@@ -122,11 +131,10 @@ class Jogada {
 		return !this.valida;
 	}
 }
-
 class JogoDaVelha {
 	constructor(
 		jogador1 = new JogadorHumano("X"),
-		jogador2 = new JogadorAleatorio("O"),
+		jogador2 = this.definirJogador2(),
 		tamanho = 3
 	) {
 		this.jogador1 = jogador1;
@@ -134,6 +142,17 @@ class JogoDaVelha {
 		this.tamanho = tamanho;
 		this.zerar();
 	}
+
+	definirJogador2() {
+		let tipoJogador = document.getElementById('jogadores').value; 
+
+		if (tipoJogador === 'jogadorHumano') {
+			return new JogadorHumano("O");
+		} else {
+			return new JogadorMinimax("O");
+		}
+	}
+
 
 	#iniciarTabuleiro() {
 		return Array(this.tamanho)
@@ -344,31 +363,62 @@ class JogoDaVelhaDOM {
 		this.informacoes.innerText = this.jogo.status();
 	}
 }
-
 (function () {
 	const botaoIniciar = document.getElementById("iniciar");
 	const informacoes = document.getElementById("informacoes");
 	const tabuleiro = document.getElementById("tabuleiro");
 	const inputTamanho = document.getElementById("tamanho");
+	const seletorJogadores = document.getElementById("jogadores");
+	const seletorDificuldade = document.getElementById("dificuldade");
 
+	// Função para definir o jogador2 com base na seleção do tipo de jogo
+	const definirJogador2 = () => {
+		const tipoJogador = seletorJogadores.value; 
+		const dificuldade = seletorDificuldade.value;
+		
+
+		if (tipoJogador === "jogadorHumano") {
+			
+			return new JogadorHumano("O");
+		} else {
+		
+			return new JogadorMinimax("O", dificuldade);
+		}
+	};
+
+	// Função para iniciar um novo jogo com o tamanho do tabuleiro definido
 	const novoJogo = (tamanho) => {
-		const jogo = new JogoDaVelha(
-			new JogadorHumano("X"),
-			new JogadorMinimax("O"),
-			tamanho
-		);
+		const jogador1 = new JogadorHumano("X"); 
+		const jogador2 = definirJogador2(); 
+		const jogo = new JogoDaVelha(jogador1, jogador2, tamanho); 
 		return jogo;
 	};
 
+	// Inicializa o objeto DOM responsável por manipular a interface
 	const jogoDOM = new JogoDaVelhaDOM(tabuleiro, informacoes);
-	jogoDOM.inicializar(novoJogo());
+	jogoDOM.inicializar(novoJogo(+inputTamanho.value)); 
 
+	// Atualiza o jogo quando o tamanho do tabuleiro for alterado
 	inputTamanho.addEventListener("input", () => {
 		let tamanho = +inputTamanho.value;
-		jogoDOM.inicializar(novoJogo(tamanho));
+		jogoDOM.inicializar(novoJogo(tamanho)); 
 	});
 
+	// Reinicia o jogo quando o botão iniciar é clicado
 	botaoIniciar.addEventListener("click", () => {
-		jogoDOM.zerar();
+		jogoDOM.zerar(); 
+		jogoDOM.inicializar(novoJogo(+inputTamanho.value));
+	});
+
+		seletorJogadores.addEventListener("click", () => {
+		const tipoJogador = seletorJogadores.value;
+		console.log(tipoJogador)
+		const dificuldade = document.getElementById('dificuldade-container')
+
+		if (tipoJogador === "jogadorAleatorio") {
+			dificuldade.classList.remove('invisivel')
+		} else {
+			dificuldade.classList.add('invisivel')
+		}
 	});
 })();

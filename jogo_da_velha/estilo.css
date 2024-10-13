@@ -25,7 +25,7 @@ body{
 #iniciar {
     font-size: 1.4rem;
     font-weight: bold;
-    background-color: rgb(146, 157, 157);
+    background-color: rgba(53, 231, 231, 0.678);
     border: none;
     padding: 5px 10px;
     border-radius: 5px;
@@ -44,6 +44,17 @@ body{
     padding-top: 25px;
 }
 
+#tamanho, #jogadores, #dificuldade {
+   
+    background-color: var(--cor-padrao);
+    outline: none;
+    color: #fff;
+    text-align: center;
+    margin-right: 10px;
+    border: solid 3px  #171342 ;
+    border-radius:10px;
+    padding: 3px;
+}
 .posicao {
     width: 150px;
     height: 150px;
@@ -69,4 +80,13 @@ body{
 
 .posicao-baixo {
     border-bottom: none;
+}
+
+.seletores {
+    margin: 15px;
+    font-size: 1.3rem;
+}
+
+.invisivel {
+    display: none;
 }
