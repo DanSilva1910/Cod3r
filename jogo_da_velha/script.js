@@ -5,21 +5,89 @@ class JogadorHumano {
 	}
 }
 
-class JogadorAleatorio {
+class JogadorMinimax {
 	constructor(simbolo) {
 		this.simbolo = simbolo;
 		this.humano = false;
 	}
 
 	jogar(tabuleiro) {
-		let linha = this.#aleatorio(1, tabuleiro.length);
-		let coluna = this.#aleatorio(1, tabuleiro.length);
-		return new Jogada(linha, coluna);
+		let melhorJogada = this.minimax(tabuleiro, this.simbolo);
+		if (!melhorJogada) {
+			throw new Error("Nenhuma jogada válida encontrada.");
+		}
+		return melhorJogada; // Retorna a jogada válida
+	}
+    minimax(tabuleiro, jogadorAtual) {
+        let vencedor = this.#verificarVencedor(tabuleiro);
+        if (vencedor) {
+            if (vencedor === this.simbolo) return { pontuacao: 10 };
+            else if (vencedor === "-") return { pontuacao: 0 };
+            else return { pontuacao: -10 };
+        }
+    
+        let jogadasDisponiveis = this.#obterJogadasValidas(tabuleiro);
+        let melhoresJogadas = [];
+    
+        for (let jogada of jogadasDisponiveis) {
+            let tabuleiroSimulado = this.#simularJogada(tabuleiro, jogada, jogadorAtual);
+            let proximoJogador = jogadorAtual === this.simbolo ? "X" : this.simbolo; // Troca de jogador
+            let resultado = this.minimax(tabuleiroSimulado, proximoJogador);
+            jogada.pontuacao = resultado.pontuacao;
+            melhoresJogadas.push(jogada);
+        }
+    
+        if (jogadorAtual === this.simbolo) {
+            return melhoresJogadas.reduce((melhor, jogada) =>
+                jogada.pontuacao > melhor.pontuacao ? jogada : melhor
+            );
+        } else {
+            return melhoresJogadas.reduce((melhor, jogada) =>
+                jogada.pontuacao < melhor.pontuacao ? jogada : melhor
+            );
+        }
+    }
+    
+    
+
+
+    
+
+	#obterJogadasValidas(tabuleiro) {
+		let jogadas = [];
+		for (let linha = 0; linha < tabuleiro.length; linha++) {
+			for (let coluna = 0; coluna < tabuleiro[linha].length; coluna++) {
+				if (tabuleiro[linha][coluna] === null) {
+					jogadas.push({ linha: linha + 1, coluna: coluna + 1 });
+				}
+			}
+		}
+		return jogadas;
 	}
 
-	#aleatorio(min, max) {
-		let valor = Math.random() * (max - min) + min;
-		return Math.round(valor);
+	#simularJogada(tabuleiro, jogada, jogadorAtual) {
+		let novoTabuleiro = tabuleiro.map((linha) => linha.slice());
+		novoTabuleiro[jogada.linha - 1][jogada.coluna - 1] = jogadorAtual;
+		return novoTabuleiro;
+	}
+
+	#verificarVencedor(tabuleiro) {
+		// Utilize a mesma lógica que já implementou no seu jogo para verificar se há um vencedor
+		const winningCombinations = [
+			[0, 1, 2], [3, 4, 5], [6, 7, 8],  // Linhas
+			[0, 3, 6], [1, 4, 7], [2, 5, 8],  // Colunas
+			[0, 4, 8], [2, 4, 6]              // Diagonais
+		];
+		for (let combo of winningCombinations) {
+			const [a, b, c] = combo;
+			if (tabuleiro[Math.floor(a / 3)][a % 3] &&
+				tabuleiro[Math.floor(a / 3)][a % 3] === tabuleiro[Math.floor(b / 3)][b % 3] &&
+				tabuleiro[Math.floor(a / 3)][a % 3] === tabuleiro[Math.floor(c / 3)][c % 3]) {
+				return tabuleiro[Math.floor(a / 3)][a % 3];
+			}
+		}
+
+		return tabuleiro.flat().includes(null) ? null : "-";
 	}
 }
 
@@ -171,18 +239,7 @@ class JogoDaVelha {
 	}
 }
 
-//const jogo = new JogoDaVelha(new JogadorHumano("X"), new JogadorAleatorio("O"));
-//jogo.jogar(new Jogada(1, 1)); //X
-//jogo.jogar(new Jogada(2, 2)); //O
-// jogo.jogar(new Jogada(1, 3)); //X
-// jogo.jogar(new Jogada(1, 2)); //O
-// jogo.jogar(new Jogada(3, 1)); //X
-// jogo.jogar(new Jogada(3, 2)); //O
-// jogo.jogar(new Jogada(3, 2)); //X
-// jogo.jogar(new Jogada(3, 1)); //O
-// jogo.jogar(new Jogada(3, 3)); //X
-// jogo.finalizouComEmpate();
-//console.log(jogo.toString());
+
 
 class JogoDaVelhaDOM {
 	constructor(tabuleiro, informacoes) {
@@ -279,7 +336,7 @@ class JogoDaVelhaDOM {
 	const novoJogo = (tamanho) => {
 		const jogo = new JogoDaVelha(
 			new JogadorHumano("X"),
-			new JogadorAleatorio("O"),
+			new JogadorMinimax("O"),
 			tamanho
 		);
 		return jogo;
